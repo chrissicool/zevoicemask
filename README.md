@@ -5,9 +5,7 @@ It features a microphone and a 8x8 matrix LED screen.
 In normal operation it shows a mouth on the screen that reproduces your voice.
 Put it in the pocket of your face mask and show people your smile.
 
-Future versions may add support for idle animations.
-If Ze Voice Mask stays idle for a given time and there is no mouth movement,
-it shall show small animations in between.
+When you do not talk for a while, it plays some animations every now and then.
 
 ## Hardware
 

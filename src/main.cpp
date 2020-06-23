@@ -8,14 +8,22 @@
 #include <NeoPixelBrightnessBus.h>
 
 #include <running_avg.h>
+#include <animations.h>
 
 template< typename T, size_t N >
 constexpr size_t count_of( const T (&)[N] )
 { return N; }
 
 template< typename T, typename U>
-static bool checkbit(T const &var, U pos)
+static inline bool is_set(T const &var, U pos)
 { return !!(var & (1 << pos)); }
+
+unsigned long long operator"" _millis(unsigned long long x) {
+  return x;
+}
+unsigned long long operator"" _secs(unsigned long long x) {
+  return x * 1000_millis;
+}
 
 static void init_serial()
 {
@@ -68,18 +76,17 @@ static inline void halt() { ets_waiti0(); }
 static HardwareMAX4466<10> MAX4466;
 static Ticker display;
 static Ticker sampler;
+static Ticker bored;
 
-static const uint8_t PanelWidth = 8;
-static const uint8_t PanelHeight = 8;
-static const uint16_t PixelCount = PanelWidth * PanelHeight;
+static const uint16_t PixelCount = COLUMNS * ROWS;
 static const uint8_t PixelPin = D9;  // RX
-static const RgbColor black(0);
-static const RgbColor white(255);
 
 static NeoTopology<ColumnMajorAlternatingLayout> topo(COLUMNS, ROWS);
 static NeoPixelBrightnessBus<NeoGrbFeature, NeoEsp8266Dma800KbpsMethod> strip(PixelCount, PixelPin);
 
-static const PROGMEM uint8_t mouth[][8] = {
+static Animations animations;
+
+static BwFrames(6) mouth = {
 {
   B00000000,
   B00000000,
@@ -145,6 +152,34 @@ enum FaceState
 
 static FaceState state = Smiling;
 
+#define DISPLAY_DELAY   (80)    // 12.5 fps
+#define SAMPLES         (7)
+#define SAMPLE_DELAY    ((DISPLAY_DELAY * 3) / (2 * SAMPLES))
+
+static void display_update();
+
+static void boring()
+{
+  Animation *anim = animations.random();
+
+  /* XXX This is blocking */
+  display.detach();
+
+#ifdef VOICEMASK_DEBUG
+  Serial.print( F("I am bored, show me a ") ); Serial.println(anim->name());
+#endif
+  anim->init();
+  for (unsigned i = 0; i < anim->frames(); ++i) {
+    anim->frame(i);
+    strip.Show();
+    delay(DISPLAY_DELAY);
+  }
+  anim->deinit();
+
+  bored.detach();
+  display.attach_ms(DISPLAY_DELAY, display_update);
+}
+
 static unsigned SetState(unsigned percent)
 {
   unsigned idx;
@@ -168,25 +203,56 @@ static unsigned SetState(unsigned percent)
     break;
   }
 
+  if (state == Smiling) {
+    if (!bored.active())
+      bored.once_ms_scheduled(5_secs + random(20_secs), boring);
+  } else {
+    bored.detach();
+  }
+
   return idx;
 }
 
-static void ShowFace(unsigned idx)
+void ClearFrame()
+{ strip.ClearTo(0); }
+
+void ShowPixel(unsigned col, unsigned row, const RgbColor &c)
+{ strip.SetPixelColor(topo.Map(col, row), c); }
+
+RgbColor const GetPixel(unsigned col, unsigned row)
+{ return strip.GetPixelColor(topo.Map(col, row)); }
+
+void ShowFrame(ColorFrames(1) const &frame)
 {
-  strip.ClearTo(black);
-  idx = min(idx, count_of(mouth) - 1);
-  for (unsigned row = 0; row < 8; row++) {
-    uint8_t this_row = pgm_read_byte(&mouth[idx][row]);
-    for (unsigned col = 0; col < 8; col++) {
-      if (checkbit(this_row, col))
-        strip.SetPixelColor(topo.Map(7 - col, row), white);
+  for (unsigned row = 0; row < ROWS; row++) {
+    for (unsigned col = 0; col < COLUMNS; col++) {
+      const RgbColor c = frame[row][col];
+      ShowPixel(col, row, c);
     }
   }
 }
 
-#define DISPLAY_DELAY   (80)    // 12.5 fps
-#define SAMPLES         (7)
-#define SAMPLE_DELAY    ((DISPLAY_DELAY * 3) / (2 * SAMPLES))
+void ShowFrame(BwFrames(1) const &frame, const RgbColor &c)
+{
+  for (unsigned row = 0; row < ROWS; row++) {
+    auto this_row = frame[row];
+    for (unsigned col = 0; col < COLUMNS; col++) {
+      if (is_set(this_row, col))
+        ShowPixel(COLUMNS - 1 - col, row, c);
+    }
+  }
+}
+
+static void ShowMouth(unsigned idx)
+{
+  const RgbColor white(255);
+
+  ClearFrame();
+  ShowFrame(mouth[idx], white);
+}
+
+void ShowMouthSmiling()
+{ ShowMouth(0); }
 
 static Running_avg<SAMPLES, unsigned> percent;
 
@@ -197,8 +263,10 @@ static void sound_sample()
 
 static void display_update()
 {
-  unsigned idx = SetState(percent);
-  ShowFace(idx);
+  static unsigned idx;
+
+  idx = SetState(percent);
+  ShowMouth(idx);
   strip.Show();
 
 #ifdef VOICEMASK_DEBUG
@@ -216,7 +284,7 @@ void setup()
   init_serial();
 
   strip.Begin();
-  strip.ClearTo(black);
+  strip.ClearTo(0);
   strip.Show();
 
   WiFi.mode(WIFI_OFF);
