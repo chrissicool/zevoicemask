@@ -213,6 +213,12 @@ static unsigned SetState(unsigned percent)
   return idx;
 }
 
+void ICACHE_RAM_ATTR isr()
+{
+  bored.detach();
+  bored.once_ms_scheduled(0, boring);
+}
+
 void ClearFrame()
 { strip.ClearTo(0); }
 
@@ -303,6 +309,9 @@ void setup()
   static_assert(SAMPLE_DELAY < DISPLAY_DELAY, "DISPLAY_DELAY is too low.");
   sampler.attach_ms(SAMPLE_DELAY, sound_sample);
   display.attach_ms(DISPLAY_DELAY, display_update);
+
+  pinMode(D3 /* Flash button */, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(D3), isr, FALLING);
 
   digitalWrite(LED_BUILTIN, HIGH);
 }
