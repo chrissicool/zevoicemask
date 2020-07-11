@@ -290,6 +290,7 @@ void setup()
   init_serial();
 
   strip.Begin();
+  strip.SetBrightness(85);
   strip.ClearTo(0);
   strip.Show();
 
