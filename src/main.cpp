@@ -182,7 +182,8 @@ static void boring()
 
 static unsigned SetState(unsigned percent)
 {
-  unsigned idx;
+  unsigned idx, inc;
+
   enum {
     Talk_range_min = 10,
     Talk_range_max = 85,
@@ -194,8 +195,18 @@ static unsigned SetState(unsigned percent)
     idx = 0;
     break;
   case Talk_range_min + 1 ... Talk_range_max:
+    /* decibel scale */
+    idx = 1;
+    inc = Talk_range / 2;
+    percent -= Talk_range_min;
+    while (percent > inc) {
+      idx++;
+      percent -= inc;
+      inc /= 2;
+      if (idx == count_of(mouth) - 2)
+        break;
+    }
     state = Talking;
-    idx = map(percent, Talk_range_min + 1, Talk_range_max, 1, count_of(mouth) - 2);
     break;
   default:
     state = Screaming;
