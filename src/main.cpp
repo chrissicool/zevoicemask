@@ -10,6 +10,8 @@
 #include <running_avg.h>
 #include <animations.h>
 
+//#define TESTMODE VOICE
+
 template< typename T, size_t N >
 constexpr size_t count_of( const T (&)[N] )
 { return N; }
@@ -275,7 +277,11 @@ static Running_avg<SAMPLES, unsigned> percent;
 
 static void sound_sample()
 {
+#if defined(TESTMODE) && (TESTMODE == VOICE)
+  percent += 50 * sin(millis() / 1000) + 50;
+#else
   percent += MAX4466.scaled_loudness<99>();
+#endif
 }
 
 static void display_update()
