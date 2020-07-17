@@ -1,17 +1,65 @@
 # Ze Voice Mask
 
-This is an Arduino implemetation of a face mask with voice visuals.
+<table>
+<tr>
+<td width="75%" valign="top">
+
+This is an open source DIY implemetation of a face mask with voice visuals.
 It features a microphone and a 8x8 matrix LED screen.
-In normal operation it shows a mouth on the screen that reproduces your voice.
+In normal operation it shows a mouth on the screen that moves its lips according to your voice.
+When you do not talk for a while, it plays some animations every now and then.
+
 Put it in the pocket of your face mask and show people your smile.
 
-When you do not talk for a while, it plays some animations every now and then.
+> **CAUTION** When you put electrical parts near your face,
+> they get rather warm. You risk burning your face!
+> Especially in the event of a short circuit.
+> Educate other people of the dangers before use.
+> Act responsibly, stay safe.
+
+> **NOTE** Do not put the plain electronics in front of your nose and mouth.
+> Always have some cloth between. Sanitize cloth and electronics alike.
+
+</td>
+<td>
+<p align="center"><img align="center" src="images/demo.gif" width="85%" height="85%" /></p>
+</td>
+</tr>
+</table>
 
 ## Hardware
 
-You will need the following hardware:
+First of all, you will need a face mask made of cloth.
+It should feature a pocket where you can put the electronics in.
+Since the electronics are rather heavy, the mask should be durable,
+so that it can carry the weight without breaking anything.
+That also means you will need strong ear straps or a loop around the neck
+to not drop the mask.
+
+Besides that, you will need the following electronics parts:
+
+<table>
+<tr>
+<td width="75%">
 
  *   ESP8266 NodeMCU DevBoard
+
+     The ESP8266 uses 3.3V voltage on the power rails, as well as the GPIO pins.
+     In contrast to Arduinos, there is no need for level shifters.
+     All peripherals can be connected right away.
+
+     The only drawback is with the onboard LDO the maximum current draw is 1000mA.
+     But that can be easily taken care of in software.
+
+     Get a version without pin headers already attached.
+
+</td>
+<td>
+<p align="center"><img align="center" src="images/nodemcu.png" width="85%" height="85%" /></p>
+</td>
+</tr>
+<tr>
+<td>
 
  *   Microphone sensor (MAX4466) breakout board with a rotary potentiometer
 
@@ -21,6 +69,14 @@ You will need the following hardware:
      Adjust the potentiometer to almost minimum gain.
      Play a bit around to find a good value.
 
+</td>
+<td>
+<p align="center"><img align="center" src="images/max4466.png" width="85%" height="85%" /></p>
+</td>
+</tr>
+<tr>
+<td>
+
  *   8x8 matrix LED based on WS2812B (ideally with a flexible board)
 
      Connect the matrix's *DIN* (data in) pin with the *RX* pin (aka. *D9*) on the NodeMCU board.
@@ -29,19 +85,75 @@ You will need the following hardware:
      In your final setup, the matrix can have another layout than mine.
      You will need to adjust the NeoTopology in the code.
 
+</td>
+<td>
+<p align="center"><img align="center" src="images/led_matrix.png" width="85%" height="85%" /></p>
+</td>
+</tr>
+<TR>
+<td>
+
  *   9V block battery clip (optional)
 
      Connect the clip's positive (*+*) wire to the *VIN* pin on the NodeMCU board.
      Connect the clip's negative (*-*) wire to any of the *GND* pins on the NodeMCU board.
 
-If you choose not to use the battery clip, you can use a regular USB powerbank instead.
+     If you choose not to use the battery clip, you can use a regular USB powerbank instead.
 
-## Installation
+     If you install the battery clip, do not power the device from battery *and* USB,
+     only use one power source at a time.
 
-This is an Arduino project based on [Platform.IO](https://platformio.org/).
-After you have set up the hardware, simply flash the firmware.
+> **NOTE** Make sure the wires are long enough. Do not place a battery near your head!
+
+</td>
+<td>
+<p align="center"><img align="center" src="images/clip.png" width="85%" height="85%" /></p>
+</td>
+</tr>
+</table>
+
+This is how the final hardware setup looks like.
+
+<div align="center">
+<img src="images/zevoicemask.jpg" width="40%" height="40%" />
+</div>
+
+Solder the parts and put everything in place on the backside of the LED matrix board.
+Make sure that the mouth has the correct orientation before fixing anything.
+Let the NodeMCU board stick out a little at one end, so that the flexible LED matrix can actually bend.
+That makes the NodeMCU run along your cheek.
+Note however that when you connect a USB cord, the NodeMCU will be pulled down a little.
+Best is to hot-glue it to the backside of the LED panel.
+Place the microphone top-center of the LED matrix board. This way it is closest to your mouth.
+Fix it in a way that you are still able to adjust the gain.
+
+At the end, fix and isolate everything with electrical tape.
+
+## Software
+
+This is an Arduino project based on [Platform.IO](https://platformio.org/). So install that first.
+After you have set up the hardware, clone this repository, connect the NodeMCU board to a USB port
+on your computer and simply flash the firmware.
 
     make flash
+
+## Frequenty Asked Questions
+
+ * *My mask does not have a separate pocket. Can I still use Ze Voice Mask?*
+
+   Sure, simply use two face masks and put Ze Voice Mask between them.
+   Make sure it does not slip through the lower end.
+
+ * *I feel like I cannot breath under this thing.*
+
+   Well, technically this is not a question, but anyway.
+   The electronics in front of your mouth and nose prevent good air flow.
+   Additionally, they can get pretty hot. That may make it harder to breath.
+   Take off the mask then and use a normal face mask.
+
+ * *What does "Ze" in the project name stand for?*
+
+   It is a homophone for the pronunciation of the word "the" with a thick German accent.
 
 ## Hacking
 
