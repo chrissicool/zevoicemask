@@ -47,24 +47,6 @@ static void init_serial()
 #endif
 }
 
-static void init_random()
-{
-  uint32_t seed;
-
-  // random works best with a seed that can use 31 bits
-  // analogRead on an unconnected pin tends toward less than four bits
-  seed = analogRead(0);
-  delayMicroseconds(100);
-
-  for (int shifts = 3; shifts < 31; shifts += 3)
-  {
-    seed ^= analogRead(0) << shifts;
-    delayMicroseconds(100);
-  }
-
-  randomSeed(seed);
-}
-
 #ifdef ARDUINO_ARCH_ESP8266
 /* This function is not available in ESP8266 framework. */
 static void ets_waiti0(void)
@@ -315,7 +297,6 @@ void setup()
   WiFi.forceSleepBegin();
   yield();
 
-  init_random();
   MAX4466.setup(A0);
 
 #ifdef VOICEMASK_DEBUG
