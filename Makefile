@@ -17,6 +17,10 @@ ifeq ($(V),1)
 VERBOSE = --verbose
 endif
 
+ifeq ($(RELEASE),)
+export PLATFORMIO_BUILD_FLAGS= -DVOICEMASK_DEBUG
+endif
+
 TARGET := nodemcuv2 
 
 build:

@@ -137,6 +137,11 @@ on your computer and simply flash the firmware.
 
     make flash
 
+This builds a debug version by default. It includes serial output and other goodies that are mainly
+useful for hacking. If you want to create a release version, run the following command instead.
+
+    make flash RELEASE=true
+
 ## Frequenty Asked Questions
 
  * *My mask does not have a separate pocket. Can I still use Ze Voice Mask?*
