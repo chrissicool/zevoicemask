@@ -127,15 +127,6 @@ static BwFrames(6) mouth = {
   B00111100
 }};
 
-enum FaceState
-{
-  Smiling,   // amplitude too low; mount[0] state.
-  Talking,   // amplitude upto count_of(mouth).
-  Screaming, // amplitude higher than count_of(mouth).
-};
-
-static FaceState state = Smiling;
-
 #define DISPLAY_DELAY   (80)    // 12.5 fps
 #define SAMPLES         (7)
 #define SAMPLE_DELAY    ((DISPLAY_DELAY * 3) / (2 * SAMPLES))
@@ -173,9 +164,9 @@ static unsigned SetState(unsigned percent)
     Talk_range_max = 85,
     Talk_range = Talk_range_max - Talk_range_min,
   };
+
   switch (percent) {
   case 0 ... Talk_range_min:
-    state = Smiling;
     idx = 0;
     break;
   case Talk_range_min + 1 ... Talk_range_max:
@@ -190,15 +181,13 @@ static unsigned SetState(unsigned percent)
       if (idx == count_of(mouth) - 2)
         break;
     }
-    state = Talking;
     break;
   default:
-    state = Screaming;
     idx = count_of(mouth) - 1;
     break;
   }
 
-  if (state == Smiling) {
+  if (idx == 0) {
     if (!bored.active())
       bored.once_ms_scheduled(5_secs + random(20_secs), boring);
   } else {
