@@ -208,7 +208,7 @@ static unsigned SetState(unsigned percent)
   return idx;
 }
 
-void ICACHE_RAM_ATTR isr()
+static void ICACHE_RAM_ATTR isr()
 {
   bored.detach();
   bored.once_ms_scheduled(0, boring);
