@@ -51,7 +51,7 @@ unsigned Tongue::frames() const
 
 void Tongue::frame(unsigned idx)
 {
-  if (idx >= (frames() - 1))
+  if (idx >= frames())
     return;
 
   if (idx >= (frames() / 2))

@@ -72,7 +72,7 @@ unsigned Pacman::frames() const
 
 void Pacman::frame(unsigned idx)
 {
-  if (idx >= (frames() - 1))
+  if (idx >= frames())
     return;
 
   const RgbColor yellow(255, 255, 0);

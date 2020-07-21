@@ -28,6 +28,9 @@ void Scanner::init()
 
 void Scanner::frame(unsigned idx)
 {
+  if (idx >= frames())
+    return;
+
   ShowMouthSmiling();
 
   unsigned col = map(idx, 0, nframes, 0, columns);

@@ -32,7 +32,7 @@ unsigned Twinkle::frames() const
 
 void Twinkle::frame(unsigned idx)
 {
-  if (idx >= (frames() - 1))
+  if (idx >= frames())
     return;
 
   unsigned dim;
