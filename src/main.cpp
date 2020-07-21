@@ -187,13 +187,6 @@ static unsigned SetState(unsigned percent)
     break;
   }
 
-  if (idx == 0) {
-    if (!bored.active())
-      bored.once_ms_scheduled(5_secs + random(20_secs), boring);
-  } else {
-    bored.detach();
-  }
-
   return idx;
 }
 
@@ -257,11 +250,18 @@ static void sound_sample()
 
 static void display_update()
 {
-  static unsigned idx;
+  unsigned idx;
 
   idx = SetState(percent);
   ShowMouth(idx);
   strip.Show();
+
+  if (idx == 0) {
+    if (!bored.active())
+      bored.once_ms_scheduled(5_secs + random(20_secs), boring);
+  } else {
+    bored.detach();
+  }
 
 #ifdef VOICEMASK_DEBUG
   Serial.print(F("ADC (raw): ")); Serial.print(analogRead(A0));
