@@ -131,28 +131,24 @@ static BwFrames(6) mouth = {
 #define SAMPLES         (7)
 #define SAMPLE_DELAY    ((DISPLAY_DELAY * 3) / (2 * SAMPLES))
 
-static void display_update();
+static Animation *currentAnimation;
+static unsigned currentAnimationFrame;
 
 static void boring()
 {
-  Animation *anim = animations.random();
+  if (currentAnimation)
+    currentAnimation->deinit();
 
-  /* XXX This is blocking */
-  display.detach();
+  currentAnimation = animations.random();
 
+  currentAnimation->init();
+  currentAnimationFrame = 0;
 #ifdef VOICEMASK_DEBUG
-  Serial.print( F("I am bored, show me a ") ); Serial.println(anim->name());
+  Serial.print( F("I am bored, show me a ") );
+  Serial.println(currentAnimation->name());
 #endif
-  anim->init();
-  for (unsigned i = 0; i < anim->frames(); ++i) {
-    anim->frame(i);
-    strip.Show();
-    delay(DISPLAY_DELAY);
-  }
-  anim->deinit();
 
   bored.detach();
-  display.attach_ms(DISPLAY_DELAY, display_update);
 }
 
 static unsigned SetState(unsigned percent)
@@ -193,7 +189,7 @@ static unsigned SetState(unsigned percent)
 static void ICACHE_RAM_ATTR isr()
 {
   bored.detach();
-  bored.once_ms_scheduled(0, boring);
+  bored.once_ms(0, boring);
 }
 
 void ClearFrame()
@@ -253,21 +249,36 @@ static void display_update()
   unsigned idx;
 
   idx = SetState(percent);
-  ShowMouth(idx);
-  strip.Show();
-
-  if (idx == 0) {
-    if (!bored.active())
-      bored.once_ms_scheduled(5_secs + random(20_secs), boring);
-  } else {
-    bored.detach();
-  }
 
 #ifdef VOICEMASK_DEBUG
   Serial.print(F("ADC (raw): ")); Serial.print(analogRead(A0));
   Serial.print(F(" --> percent (avg): ")); Serial.print(percent);
-  Serial.print(F(" --> idx: ")); Serial.println(idx);
+  if (currentAnimation) {
+    Serial.print(F(" --> anim idx: ")); Serial.println(currentAnimationFrame);
+  } else {
+    Serial.print(F(" --> idx: ")); Serial.println(idx);
+  }
 #endif
+
+  if (currentAnimation) {
+    currentAnimation->frame(currentAnimationFrame);
+    currentAnimationFrame++;
+    if (currentAnimationFrame >= currentAnimation->frames()) {
+      currentAnimation->deinit();
+      currentAnimation = nullptr;
+    }
+  } else {
+    ShowMouth(idx);
+
+    if (idx == 0) {
+      if (!bored.active())
+        bored.once_ms(5_secs + random(20_secs), boring);
+    } else {
+      bored.detach();
+    }
+  }
+
+  strip.Show();
 }
 
 void setup()
