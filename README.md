@@ -7,6 +7,7 @@
 This is an open source DIY implemetation of a face mask with voice visuals.
 It features a microphone and a 8x8 matrix LED screen.
 In normal operation it shows a mouth on the screen that moves its lips according to your voice.
+The talking mouth features different graphical effects which change from time to time.
 When you do not talk for a while, it plays some animations every now and then.
 
 Put it in the pocket of your face mask and show people your smile.

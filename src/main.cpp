@@ -11,6 +11,7 @@ extern "C" {
 
 #include <running_avg.h>
 #include <animations.h>
+#include <effects.h>
 
 //#define TESTMODE VOICE
 
@@ -71,6 +72,7 @@ static NeoTopology<ColumnMajorAlternatingLayout> topo(COLUMNS, ROWS);
 static NeoPixelBrightnessBus<NeoGrbFeature, NeoEsp8266Dma800KbpsMethod> strip(PixelCount, PixelPin);
 
 static Animations animations;
+static Effects effects;
 
 static BwFrames(6) mouth = {
 {
@@ -145,11 +147,15 @@ static void boring()
 
   currentAnimation->init();
   currentAnimationFrame = 0;
+
+  effects.choose();
+
 #ifdef VOICEMASK_DEBUG
   Serial.print( F("I am bored, show me a ") );
-  Serial.println(currentAnimation->name());
+  Serial.print(currentAnimation->name());
+  Serial.print( F(", then apply ") );
+  Serial.println(effects.name());
 #endif
-
   bored.detach();
 }
 
@@ -272,6 +278,8 @@ static void display_update()
   } else {
     ShowMouth(idx);
 
+    effects.apply(percent);
+
     if (idx == 0) {
       if (!bored.active())
         bored.once_ms(5_secs + random(20_secs), boring);
@@ -333,6 +341,7 @@ void setup()
 
   pinMode(D3 /* Flash button */, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(D3), isr, FALLING);
+  boring();
 
   digitalWrite(LED_BUILTIN, HIGH);
 }
