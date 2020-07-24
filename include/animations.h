@@ -6,6 +6,7 @@
 #include <animation.h>
 #include <animations/pacman.h>
 #include <animations/scanner.h>
+#include <animations/strobe.h>
 #include <animations/tongue.h>
 #include <animations/twinkle.h>
 
@@ -19,6 +20,7 @@ public:
   {
     _animations.push_back(&pacman);
     _animations.push_back(&scanner);
+    _animations.push_back(&strobe);
     _animations.push_back(&tongue);
     _animations.push_back(&twinkle);
   }
