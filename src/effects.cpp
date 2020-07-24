@@ -1,9 +1,11 @@
 #include <effects.h>
 
 #include <effect.h>
+#include <effects/sparkle.h>
 
 Effects::Effects() : _current(nullptr)
 {
+  _effects.push_back(&sparkle);
 }
 
 void Effects::choose()
