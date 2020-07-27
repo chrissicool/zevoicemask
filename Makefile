@@ -26,8 +26,8 @@ TARGET := nodemcuv2
 build:
 	platformio run $(addprefix -e ,$(TARGET)) $(VERBOSE)
 
-test: build
-	platformio test $(addprefix -e ,$(TARGET)) $(VERBOSE)
+test:
+	platformio test -e native $(VERBOSE)
 
 install upload flash:
 	[ $(words $(TARGET)) -eq 1 ] || exit 1
