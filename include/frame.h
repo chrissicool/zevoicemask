@@ -46,3 +46,32 @@ void ShowFrame(ColorFrames(1) const &frame);
 void ShowFrame(BwFrames(1) const &frame, const RgbColor &c);
 void ShowPixel(unsigned col, unsigned row, const RgbColor &c);
 RgbColor const GetPixel(unsigned col, unsigned row);
+
+/*
+ * Some operators that are missing in NeoPixelBus.
+ */
+
+static inline RgbColor& operator+=(RgbColor& lhs, const RgbColor& rhs)
+{
+  lhs.R = ((255 - rhs.R) > lhs.R) ? 255 : lhs.R + rhs.R;
+  lhs.G = ((255 - rhs.G) > lhs.G) ? 255 : lhs.G + rhs.G;
+  lhs.B = ((255 - rhs.B) > lhs.B) ? 255 : lhs.B + rhs.B;
+  return lhs;
+}
+static inline RgbColor operator+(RgbColor lhs, const RgbColor& rhs)
+{
+  lhs += rhs;
+  return lhs;
+}
+static inline RgbColor& operator-=(RgbColor& lhs, const RgbColor& rhs)
+{
+  lhs.R = (rhs.R > lhs.R) ? 0 : lhs.R - rhs.R;
+  lhs.G = (rhs.G > lhs.G) ? 0 : lhs.G - rhs.G;
+  lhs.B = (rhs.B > lhs.B) ? 0 : lhs.B - rhs.B;
+  return lhs;
+}
+static inline RgbColor operator-(RgbColor lhs, const RgbColor& rhs)
+{
+  lhs -= rhs;
+  return lhs;
+}
