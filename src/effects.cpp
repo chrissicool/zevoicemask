@@ -1,10 +1,12 @@
 #include <effects.h>
 
 #include <effect.h>
+#include <effects/distort.h>
 #include <effects/sparkle.h>
 
 Effects::Effects() : _current(nullptr)
 {
+  _effects.push_back(&distort);
   _effects.push_back(&sparkle);
 }
 
