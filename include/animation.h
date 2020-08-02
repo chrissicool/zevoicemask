@@ -66,13 +66,12 @@ public:
   virtual void frame(unsigned n) = 0;
 
 #ifdef VOICEMASK_DEBUG
-  virtual const char *name() const = 0;
+  virtual const __FlashStringHelper *name() const = 0;
 
 # define ANIMATION_NAME(n) \
-  const char *name() const override { return n ; } 
+  const __FlashStringHelper *name() const override { return F(n); }
 #else
 # define ANIMATION_NAME(n)
-
 #endif /* VOICEMASK_DEBUG */
 
   /**
