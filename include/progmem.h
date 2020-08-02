@@ -37,6 +37,6 @@ struct array_P<T, DIMENSION, nDIMENSIONS...>
   {
     if (i >= DIMENSION)
       i = DIMENSION - 1;
-    return static_cast<const value_type&>(pgm_read_word(&_data[i]));
+    return static_cast<const value_type&>(pgm_read_ptr(&_data[i]));
   }
 };
