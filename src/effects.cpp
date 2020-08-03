@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include <effects.h>
 
 #include <effect.h>
@@ -5,6 +7,8 @@
 #include <effects/circle.h>
 #include <effects/distort.h>
 #include <effects/sparkle.h>
+
+//#define EFFECT blend
 
 Effects::Effects()
 {
@@ -33,6 +37,13 @@ void Effects::choose()
           doublet = true;
       }
     } while (doublet);
+
+#if defined(EFFECT)
+    auto it = std::find(_effects.begin(), _effects.end(), &EFFECT);
+    idx = it - _effects.begin();
+    if (n > 0)
+      idx = _effects.size();
+#endif
 
     if (idx == _effects.size()) {
       _current[n] = nullptr;
