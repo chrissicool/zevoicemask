@@ -12,6 +12,7 @@ extern "C" {
 #include <running_avg.h>
 #include <animations.h>
 #include <effects.h>
+#include <frame.h>
 
 //#define TESTMODE VOICE
 
@@ -135,24 +136,14 @@ static BwFrames(6) mouth = {
 #define SAMPLES         (7)
 #define SAMPLE_DELAY    ((DISPLAY_DELAY * 3) / (2 * SAMPLES))
 
-static Animation *currentAnimation;
-static unsigned currentAnimationFrame;
-
 static void boring()
 {
-  if (currentAnimation)
-    currentAnimation->deinit();
-
-  currentAnimation = animations.random();
-
-  currentAnimation->init();
-  currentAnimationFrame = 0;
-
+  animations.choose();
   effects.choose();
 
 #ifdef VOICEMASK_DEBUG
   Serial.print( F("I am bored, show me a ") );
-  Serial.print(currentAnimation->name());
+  Serial.print(animations.name());
   Serial.print( F(", then apply ") );
   Serial.println(effects.name());
 #endif
@@ -261,20 +252,15 @@ static void display_update()
 #ifdef VOICEMASK_DEBUG
   Serial.print(F("ADC (raw): ")); Serial.print(analogRead(A0));
   Serial.print(F(" --> percent (avg): ")); Serial.print(percent);
-  if (currentAnimation) {
-    Serial.print(F(" --> anim idx: ")); Serial.println(currentAnimationFrame);
+  if (animations.active()) {
+    Serial.print(F(" --> anim idx: ")); Serial.println(animations.frame_nr());
   } else {
     Serial.print(F(" --> idx: ")); Serial.println(idx);
   }
 #endif
 
-  if (currentAnimation) {
-    currentAnimation->frame(currentAnimationFrame);
-    currentAnimationFrame++;
-    if (currentAnimationFrame >= currentAnimation->frames()) {
-      currentAnimation->deinit();
-      currentAnimation = nullptr;
-    }
+  if (animations.active()) {
+    animations.frame();
   } else {
     ShowMouth(idx);
 
