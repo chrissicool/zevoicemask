@@ -8,8 +8,11 @@ class Effect;
 class Effects
 {
 private:
+  enum {
+    N = 3, ///< Number of effects to apply.
+  };
   std::vector<Effect *> _effects;
-  Effect *_current;
+  Effect *_current[N];
 
 public:
   Effects();
@@ -27,5 +30,5 @@ public:
   /**
    * Chosen effect's name.
    */
-  const __FlashStringHelper *name();
+  const String name();
 };

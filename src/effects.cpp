@@ -6,8 +6,10 @@
 #include <effects/distort.h>
 #include <effects/sparkle.h>
 
-Effects::Effects() : _current(nullptr)
+Effects::Effects()
 {
+  for (unsigned n = 0; n < N; ++n)
+    _current[n] = nullptr;
   _effects.push_back(&blend);
   _effects.push_back(&circle);
   _effects.push_back(&distort);
@@ -16,28 +18,53 @@ Effects::Effects() : _current(nullptr)
 
 void Effects::choose()
 {
-  size_t idx = random(_effects.size() + 1);
-  if (_current)
-    _current->deinit();
-  if (idx == _effects.size()) {
-    _current = nullptr;
-    return;
+  for (unsigned n = 0; n < N; ++n) {
+    size_t idx;
+    bool doublet;
+
+    if (_current[n])
+      _current[n]->deinit();
+
+    do {
+      doublet = false;
+      idx = random(_effects.size() + 1);
+      for (unsigned i = 0; i < n; ++i) {
+        if (idx < _effects.size() && _current[i] == _effects[idx])
+          doublet = true;
+      }
+    } while (doublet);
+
+    if (idx == _effects.size()) {
+      _current[n] = nullptr;
+      continue;
+    }
+    _current[n] = _effects[idx];
+    _current[n]->init();
   }
-  _current = _effects[idx];
-  _current->init();
 }
 
 void Effects::apply(unsigned percent)
 {
-  if (_current)
-    _current->apply(percent);
+  for (unsigned n = 0; n < N; ++n) {
+    if (_current[n])
+      _current[n]->apply(percent);
+  }
 }
 
 #ifdef VOICEMASK_DEBUG
-const __FlashStringHelper *Effects::name()
+const String Effects::name()
 {
-  if (!_current)
-    return F("none");
-  return _current->name();
+  String r = F("{");
+  for (unsigned n = 0; n < N; ++n) {
+    if (_current[n])
+      r += _current[n]->name();
+    else
+      r += F("none");
+    if (n < N - 1)
+      r += F(", ");
+  }
+  r += F("}");
+
+  return r;
 }
 #endif
