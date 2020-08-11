@@ -8,7 +8,7 @@ class Animation;
 class Animations
 {
 private:
-  std::vector<Animation *> _animations;
+  const std::vector<Animation *> _animations;
   Animation *_current;
   unsigned _frame;
 

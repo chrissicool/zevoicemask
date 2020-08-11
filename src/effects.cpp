@@ -11,13 +11,15 @@
 //#define EFFECT blend
 
 Effects::Effects()
+  : _effects{
+      &blend,
+      &circle,
+      &distort,
+      &sparkle
+    }
 {
   for (unsigned n = 0; n < N; ++n)
     _current[n] = nullptr;
-  _effects.push_back(&blend);
-  _effects.push_back(&circle);
-  _effects.push_back(&distort);
-  _effects.push_back(&sparkle);
 }
 
 void Effects::choose()

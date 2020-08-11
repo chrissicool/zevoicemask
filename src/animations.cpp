@@ -10,14 +10,15 @@
 #include <animations/twinkle.h>
 
 Animations::Animations()
-  : _current(nullptr), _frame(0)
-{
-  _animations.push_back(&pacman);
-  _animations.push_back(&scanner);
-  _animations.push_back(&strobe);
-  _animations.push_back(&tongue);
-  _animations.push_back(&twinkle);
-}
+  : _animations{
+      &pacman,
+      &scanner,
+      &strobe,
+      &tongue,
+      &twinkle
+    },
+    _current(nullptr), _frame(0)
+{ }
 
 void Animations::choose()
 {

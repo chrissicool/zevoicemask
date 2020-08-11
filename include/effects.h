@@ -11,7 +11,7 @@ private:
   enum {
     N = 3, ///< Number of effects to apply.
   };
-  std::vector<Effect *> _effects;
+  const std::vector<Effect *> _effects;
   Effect *_current[N];
 
 public:
