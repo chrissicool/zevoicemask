@@ -1,7 +1,9 @@
 #include <Arduino.h>
+extern "C" {
+#include <user_interface.h>
+}
 
 #include <Ticker.h>
-#include <ESP8266WiFi.h>
 #include <MAX4466.h>
 
 #include <NeoPixelAnimator.h>
@@ -281,6 +283,29 @@ static void display_update()
   strip.Show();
 }
 
+static void wifi_modem_sleep()
+{
+  if (wifi_fpm_get_sleep_type() == MODEM_SLEEP_T &&
+      wifi_get_opmode() == NULL_MODE)
+    return;
+
+  wifi_set_opmode_current(NULL_MODE);
+  yield();
+  wifi_fpm_set_sleep_type(MODEM_SLEEP_T);
+  yield();
+  wifi_fpm_open();
+  wifi_fpm_do_sleep(0xFFFFFFF);
+  yield();
+
+#ifdef VOICEMASK_DEBUG
+  if (wifi_get_opmode() != NULL_MODE ||
+      wifi_fpm_get_sleep_type() != MODEM_SLEEP_T) {
+    Serial.println(F("Cannot turn off Wifi!\n"));
+    delay(10_secs);
+  }
+#endif
+}
+
 void setup()
 {
   pinMode(LED_BUILTIN, OUTPUT);
@@ -293,10 +318,7 @@ void setup()
   strip.ClearTo(0);
   strip.Show();
 
-  WiFi.mode(WIFI_OFF);
-  WiFi.forceSleepBegin();
-  yield();
-
+  wifi_modem_sleep();
   MAX4466.setup(A0);
 
 #ifdef VOICEMASK_DEBUG
