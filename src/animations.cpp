@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <algorithm>
 
 #include <animations.h>
 
@@ -8,6 +9,8 @@
 #include <animations/strobe.h>
 #include <animations/tongue.h>
 #include <animations/twinkle.h>
+
+//#define ANIMATION twinkle
 
 Animations::Animations()
   : _animations{
@@ -25,7 +28,11 @@ void Animations::choose()
   if (_current)
     _current->deinit();
 
-  const size_t idx = ::random(_animations.size());
+  size_t idx = ::random(_animations.size());
+#if defined(ANIMATION)
+  auto it = std::find(_animations.begin(), _animations.end(), &ANIMATION);
+  idx = it - _animations.begin();
+#endif
   _current = _animations[idx];
 
   _current->init();
