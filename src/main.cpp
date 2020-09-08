@@ -133,7 +133,7 @@ static BwFrames(6) mouth = {
 }};
 
 #define DISPLAY_DELAY   (80)    // 12.5 fps
-#define SAMPLES         (7)
+#define SAMPLES         (3)
 #define SAMPLE_DELAY    ((DISPLAY_DELAY * 3) / (2 * SAMPLES))
 
 static void boring()
@@ -320,8 +320,10 @@ void setup()
   Serial.print( F("Sample delay: ") ); Serial.println(SAMPLE_DELAY);
   Serial.println();
 #endif
-  static_assert(SAMPLE_DELAY > 0, "SAMPLE_DELAY is too tight.");
+  static_assert(SAMPLE_DELAY > 0, "SAMPLE_DELAY breaks Ticker; needs to be >0.");
+  static_assert(SAMPLE_DELAY < 100, "SAMPLE_DELAY is too high; WDT will kill us.");
   static_assert(SAMPLE_DELAY < DISPLAY_DELAY, "DISPLAY_DELAY is too low.");
+
   sampler.attach_ms(SAMPLE_DELAY, sound_sample);
   display.attach_ms(DISPLAY_DELAY, display_update);
 
