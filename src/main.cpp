@@ -250,8 +250,8 @@ static void display_update()
   idx = SetState(percent);
 
 #ifdef VOICEMASK_DEBUG
-  Serial.print(F("ADC (raw): ")); Serial.print(analogRead(A0));
-  Serial.print(F(" --> percent (avg): ")); Serial.print(percent);
+  Serial.print(F("MAX4466: ")); Serial.print(MAX4466);
+  Serial.print(F(" --> percent (avg): ")); Serial.printf_P(PSTR("%3u"), unsigned(percent));
   if (animations.active()) {
     Serial.print(F(" --> anim idx: ")); Serial.println(animations.frame_nr());
   } else {
