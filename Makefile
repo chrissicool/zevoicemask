@@ -10,7 +10,7 @@
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
 
-.PHONY: all build test install upload flash clean clean-pio3 clean-pio4
+.PHONY: all build test install upload flash clean clean-pio3 clean-pio4 release
 all: build
 
 ifeq ($(V),1)
@@ -28,6 +28,17 @@ build:
 
 test:
 	platformio test -e native $(VERBOSE)
+
+release: version=$(shell git describe --tags --candidates=1 --dirty --broken)
+release:
+	$(MAKE) $(MAKE_OPTIONS) test
+	$(MAKE) $(MAKE_OPTIONS) RELEASE=true build
+	@for t in $(TARGET) ; do \
+		cp .pio/build/$${t}/firmware.bin zevoicemask_$${t}_$(version).bin ; \
+		tput setaf 2 ; \
+		echo ">>> zevoicemask_$${t}_$(version).bin" ; \
+		tput sgr0 ; \
+	done
 
 install upload flash:
 	[ $(words $(TARGET)) -eq 1 ] || exit 1
