@@ -78,12 +78,17 @@ Besides that, you will need the following electronics parts:
 <tr>
 <td>
 
- *   8x8 matrix LED based on WS2812B (ideally with a flexible board)
+ *   8x8 matrix LED based on WS2812B ECO (ideally with a flexible board)
+
+     Make sure to get the ECO variant of the LED matrix. It consumes less electricity.
+     All components are connected to the same LDO regulator on the NodeMCU board.
+     The ECO variant causes less feedback into other components.
+     That leads to more accutate microphone sensor readings.
 
      Connect the matrix's *DIN* (data in) pin with the *RX* pin (aka. *D9*) on the NodeMCU board.
      Connect the matrix's *5V*/*VCC* and *GND* pins to their respective *3.3V* and *GND* pins on the NodeMCU board.
 
-     In your final setup, the matrix can have another layout than mine.
+     In your final setup, the matrix might have another layout.
      You will need to adjust the NeoTopology in the code.
 
 </td>
@@ -118,6 +123,11 @@ This is how the final hardware setup looks like.
 <div align="center">
 <img src="images/zevoicemask.jpg" width="40%" height="40%" />
 </div>
+
+Prepare the LED matrix board.
+All components are going to be attached to it.
+Deburr the edges of the board with a file.
+Cover the back of the board with electrical tape so that broken components can be easily removed.
 
 Solder the parts and put everything in place on the backside of the LED matrix board.
 Make sure that the mouth has the correct orientation before fixing anything.
