@@ -32,10 +32,13 @@ Put it in the pocket of your face mask and show people your smile.
 
 First of all, you will need a face mask made of cloth.
 It should feature a pocket where you can put the electronics in.
+A pocket size for a standard PM2.5 air filter is enough.
 Since the electronics are rather heavy, the mask should be durable,
 so that it can carry the weight without breaking anything.
 That also means you will need strong ear straps or a loop around the neck
 to not drop the mask.
+A tube scarf has proven to be working well in practice.
+It hides the cables and holds the electronics when you pull down the mask.
 
 Besides that, you will need the following electronics parts:
 
