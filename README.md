@@ -46,16 +46,16 @@ Besides that, you will need the following electronics parts:
 <tr>
 <td width="75%">
 
- *   ESP8266 NodeMCU DevBoard
+*   ESP8266 NodeMCU DevBoard
 
-     The ESP8266 uses 3.3V voltage on the power rails, as well as the GPIO pins.
-     In contrast to Arduinos, there is no need for level shifters.
-     All peripherals can be connected right away.
+    The ESP8266 uses 3.3V voltage on the power rails, as well as the GPIO pins.
+    In contrast to Arduinos, there is no need for level shifters.
+    All peripherals can be connected right away.
 
-     The only drawback is with the onboard LDO the maximum current draw is 1000mA.
-     But that can be easily taken care of in software.
+    The only drawback is with the onboard LDO the maximum current draw is 1000mA.
+    But that can be easily taken care of in software.
 
-     Get a version without pin headers already attached.
+    Get a version without pin headers already attached.
 
 </td>
 <td>
@@ -65,13 +65,13 @@ Besides that, you will need the following electronics parts:
 <tr>
 <td>
 
- *   Microphone sensor (MAX4466) breakout board with a rotary potentiometer
+*   Microphone sensor (MAX4466) breakout board with a rotary potentiometer
 
-     Connect the sensor's *OUT* pin to the *A0* pin on the NodeMCU board.
-     Connect the sensor's *VCC* and *GND* pins to their respective *3.3V* and *GND* pins on the NodeMCU board.
+    Connect the sensor's *OUT* pin to the *A0* pin on the NodeMCU board.
+    Connect the sensor's *VCC* and *GND* pins to their respective *3.3V* and *GND* pins on the NodeMCU board.
 
-     Adjust the potentiometer to almost minimum gain.
-     Play a bit around to find a good value.
+    Adjust the potentiometer to almost minimum gain.
+    Play a bit around to find a good value.
 
 </td>
 <td>
@@ -81,18 +81,18 @@ Besides that, you will need the following electronics parts:
 <tr>
 <td>
 
- *   8x8 matrix LED based on WS2812B ECO (ideally with a flexible board)
+*   8x8 matrix LED based on WS2812B ECO (ideally with a flexible board)
 
-     Make sure to get the ECO variant of the LED matrix. It consumes less electricity.
-     All components are connected to the same LDO regulator on the NodeMCU board.
-     The ECO variant causes less feedback into other components.
-     That leads to more accutate microphone sensor readings.
+    Make sure to get the ECO variant of the LED matrix. It consumes less electricity.
+    All components are connected to the same LDO regulator on the NodeMCU board.
+    The ECO variant causes less feedback into other components.
+    That leads to more accutate microphone sensor readings.
 
-     Connect the matrix's *DIN* (data in) pin with the *RX* pin (aka. *D9*) on the NodeMCU board.
-     Connect the matrix's *5V*/*VCC* and *GND* pins to their respective *3.3V* and *GND* pins on the NodeMCU board.
+    Connect the matrix's *DIN* (data in) pin with the *RX* pin (aka. *D9*) on the NodeMCU board.
+    Connect the matrix's *5V*/*VCC* and *GND* pins to their respective *3.3V* and *GND* pins on the NodeMCU board.
 
-     In your final setup, the matrix might have another layout.
-     You will need to adjust the NeoTopology in the code.
+    In your final setup, the matrix might have another layout.
+    You will need to adjust the NeoTopology in the code.
 
 </td>
 <td>
@@ -102,15 +102,15 @@ Besides that, you will need the following electronics parts:
 <TR>
 <td>
 
- *   9V block battery clip (optional)
+*   9V block battery clip (optional)
 
-     Connect the clip's positive (*+*) wire to the *VIN* pin on the NodeMCU board.
-     Connect the clip's negative (*-*) wire to any of the *GND* pins on the NodeMCU board.
+    Connect the clip's positive (*+*) wire to the *VIN* pin on the NodeMCU board.
+    Connect the clip's negative (*-*) wire to any of the *GND* pins on the NodeMCU board.
 
-     If you choose not to use the battery clip, you can use a regular USB powerbank instead.
+    If you choose not to use the battery clip, you can use a regular USB powerbank instead.
 
-     If you install the battery clip, do not power the device from battery *and* USB,
-     only use one power source at a time.
+    If you install the battery clip, do not power the device from battery *and* USB,
+    only use one power source at a time.
 
 > **NOTE** Make sure the wires are long enough. Do not place a battery near your head!
 
@@ -158,21 +158,21 @@ useful for hacking. If you want to create a release version, run the following c
 
 ## Frequenty Asked Questions
 
- * *My mask does not have a separate pocket. Can I still use Ze Voice Mask?*
+*   My mask does not have a separate pocket. Can I still use Ze Voice Mask?
 
-   Sure, simply use two face masks and put Ze Voice Mask between them.
-   Make sure it does not slip through the lower end.
+    Sure, simply use two face masks and put Ze Voice Mask between them.
+    Make sure it does not slip through the lower end.
 
- * *I feel like I cannot breath under this thing.*
+*   I feel like I cannot breath under this thing.
 
-   Well, technically this is not a question, but anyway.
-   The electronics in front of your mouth and nose prevent good air flow.
-   Additionally, they can get pretty hot. That may make it harder to breath.
-   Take off the mask then and use a normal face mask.
+    Well, technically this is not a question, but anyway.
+    The electronics in front of your mouth and nose prevent good air flow.
+    Additionally, they can get pretty hot. That may make it harder to breath.
+    Take off the mask then and use a normal face mask.
 
- * *What does "Ze" in the project name stand for?*
+*   What does *Ze* in the project name stand for?
 
-   It is a homophone for the pronunciation of the word "the" with a thick German accent.
+    It is a homophone for the pronunciation of the word "the" with a thick German accent.
 
 ## Hacking
 
