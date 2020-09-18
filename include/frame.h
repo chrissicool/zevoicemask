@@ -38,10 +38,11 @@ class BwFrame<1> : public marray<uint8_t, ROWS>
 
 #define BwFrames(n)     BwFrame<n>::value_type
 
+void PGM_ShowFrame(BwFrames(1) const &frame, RgbColor const &c);
+
 void ClearFrame();
 void ShowMouthSmiling();
 void ShowFrame(ColorFrames(1) const &frame);
-void ShowFrame(BwFrames(1) const &frame, const RgbColor &c);
 void ShowPixel(unsigned col, unsigned row, const RgbColor &c);
 RgbColor const GetPixel(unsigned col, unsigned row);
 

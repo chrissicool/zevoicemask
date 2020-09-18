@@ -1,7 +1,7 @@
 #include <animations/pacman.h>
 
 static const unsigned nframes = 8;
-static const BwFrames(nframes) pix = {
+static const constexpr BwFrames(nframes) pix PROGMEM = {
 {
   B00000000,
   B10000000,
@@ -78,7 +78,7 @@ void Pacman::frame(unsigned idx)
   const RgbColor yellow(255, 255, 0);
 
   ShowMouthSmiling();
-  ShowFrame(pix[idx], yellow);
+  PGM_ShowFrame(pix[idx], yellow);
 }
 
 Pacman pacman;

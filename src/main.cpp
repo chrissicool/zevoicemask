@@ -77,7 +77,7 @@ static NeoPixelBrightnessBus<NeoGrbFeature, NeoEsp8266Dma800KbpsMethod> strip(Pi
 static Animations animations;
 static Effects effects;
 
-static BwFrames(6) mouth = {
+static const constexpr BwFrames(6) mouth PROGMEM = {
 {
   B00000000,
   B00000000,
@@ -223,10 +223,13 @@ void ShowFrame(ColorFrames(1) const &frame)
   }
 }
 
-void ShowFrame(BwFrames(1) const &frame, const RgbColor &c)
+void PGM_ShowFrame(BwFrames(1) const &frame, const RgbColor &c)
 {
+  BwFrames(1) f;
+
+  memcpy_P(f, &frame, sizeof(f));
   for (unsigned row = 0; row < ROWS; row++) {
-    auto this_row = frame[row];
+    uint8_t this_row = f[row];
     for (unsigned col = 0; col < COLUMNS; col++) {
       if (is_set(this_row, col))
         ShowPixel(COLUMNS - 1 - col, row, c);
@@ -239,7 +242,7 @@ static void ShowMouth(unsigned idx)
   const RgbColor white(255);
 
   ClearFrame();
-  ShowFrame(mouth[idx], white);
+  PGM_ShowFrame(mouth[idx], white);
 }
 
 void ShowMouthSmiling()
