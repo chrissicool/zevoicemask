@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <NeoPixelBrightnessBus.h> // RgbColor
 
-#include <progmem.h>
+#include <marray.h>
 
 #define COLUMNS         (8)
 #define ROWS            (8)
@@ -11,15 +11,14 @@
 /**
  * RgbColor frames.
  *
- * A list of color frames for a COLUMNS x ROWS matrix,
- * stored in PROGMEM.
+ * A list of color frames for a COLUMNS x ROWS matrix.
  */
 template <unsigned FRAMES>
-class ColorFrame : public array_P<RgbColor, FRAMES, ROWS, COLUMNS>
+class ColorFrame : public marray<RgbColor, FRAMES, ROWS, COLUMNS>
 { };
 
 template <>
-class ColorFrame<1> : public array_P<RgbColor, ROWS, COLUMNS>
+class ColorFrame<1> : public marray<RgbColor, ROWS, COLUMNS>
 { };
 
 #define ColorFrames(n)  ColorFrame<n>::value_type
@@ -27,15 +26,14 @@ class ColorFrame<1> : public array_P<RgbColor, ROWS, COLUMNS>
 /**
  * Black/white frames.
  *
- * A list of black/white frames for a 8 x ROWS matrix,
- * stored in PROGMEM.
+ * A list of black/white frames for a 8 x ROWS matrix.
  */
 template <unsigned FRAMES>
-class BwFrame : public array_P<uint8_t, FRAMES, ROWS>
+class BwFrame : public marray<uint8_t, FRAMES, ROWS>
 { };
 
 template <>
-class BwFrame<1> : public array_P<uint8_t, ROWS>
+class BwFrame<1> : public marray<uint8_t, ROWS>
 { };
 
 #define BwFrames(n)     BwFrame<n>::value_type
