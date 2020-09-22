@@ -1,11 +1,11 @@
 #include <animations/tongue.h>
 
-static const RgbColor b(  0,   0,   0);
-static const RgbColor w(255, 255, 255);
-static const RgbColor t(214,  92, 110);
+static const constexpr PGM_RgbColor b = {  0,   0,   0};
+static const constexpr PGM_RgbColor w = {255, 255, 255};
+static const constexpr PGM_RgbColor t = {214,  92, 110};
 
 static const unsigned nframes = 4;
-static const ColorFrames(nframes) pix = {
+static const constexpr ColorFrames(nframes) pix PROGMEM = {
  {
   { b, b, b, b, b, b, b, b, },
   { b, b, b, b, b, b, b, b, },
@@ -58,7 +58,7 @@ void Tongue::frame(unsigned idx)
     idx = frames() - 1 - idx;
 
   ClearFrame();
-  ShowFrame(pix[idx]);
+  PGM_ShowFrame(pix[idx]);
 }
 
 Tongue tongue;

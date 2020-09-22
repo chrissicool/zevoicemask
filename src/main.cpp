@@ -213,11 +213,14 @@ void ShowPixel(unsigned col, unsigned row, const RgbColor &c)
 RgbColor const GetPixel(unsigned col, unsigned row)
 { return strip.GetPixelColor(topo.Map(col, row)); }
 
-void ShowFrame(ColorFrames(1) const &frame)
+void PGM_ShowFrame(ColorFrames(1) const &frame)
 {
+  ColorFrames(1) f;
+
+  memcpy_P(f, &frame, sizeof(f));
   for (unsigned row = 0; row < ROWS; row++) {
     for (unsigned col = 0; col < COLUMNS; col++) {
-      const RgbColor c = frame[row][col];
+      RgbColor const c = f[row][col];
       ShowPixel(col, row, c);
     }
   }

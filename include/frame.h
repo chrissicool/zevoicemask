@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <NeoPixelBrightnessBus.h> // RgbColor
 
+#include <progmem.h>
 #include <marray.h>
 
 #define COLUMNS         (8)
@@ -14,11 +15,11 @@
  * A list of color frames for a COLUMNS x ROWS matrix.
  */
 template <unsigned FRAMES>
-class ColorFrame : public marray<RgbColor, FRAMES, ROWS, COLUMNS>
+class ColorFrame : public marray<PGM_RgbColor, FRAMES, ROWS, COLUMNS>
 { };
 
 template <>
-class ColorFrame<1> : public marray<RgbColor, ROWS, COLUMNS>
+class ColorFrame<1> : public marray<PGM_RgbColor, ROWS, COLUMNS>
 { };
 
 #define ColorFrames(n)  ColorFrame<n>::value_type
@@ -38,12 +39,12 @@ class BwFrame<1> : public marray<uint8_t, ROWS>
 
 #define BwFrames(n)     BwFrame<n>::value_type
 
+void PGM_ShowFrame(ColorFrames(1) const &frame);
 void PGM_ShowFrame(BwFrames(1) const &frame, RgbColor const &c);
 
 void ClearFrame();
 void ShowMouthSmiling();
-void ShowFrame(ColorFrames(1) const &frame);
-void ShowPixel(unsigned col, unsigned row, const RgbColor &c);
+void ShowPixel(unsigned col, unsigned row, RgbColor const &c);
 RgbColor const GetPixel(unsigned col, unsigned row);
 
 /*
