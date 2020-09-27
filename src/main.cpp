@@ -146,6 +146,8 @@ static BwFrames(6) mouth = {
 #define DISPLAY_DELAY   (80_millis)    // 12.5 fps
 #define SAMPLES         (3)
 #define SAMPLE_DELAY    ((DISPLAY_DELAY * 3) / (2 * SAMPLES))
+#define BORED_MIN_DELAY (5_secs)
+#define BORED_MAX_DELAY (25_secs)
 
 static void boring()
 {
@@ -278,8 +280,10 @@ static void display_update()
     effects.apply(percent);
 
     if (idx == 0) {
-      if (!bored.active())
-        bored.once_ms(5_secs + random(20_secs), boring);
+      if (!bored.active()) {
+        uint32_t delay_range = BORED_MAX_DELAY - BORED_MIN_DELAY;
+        bored.once_ms(BORED_MIN_DELAY + random(delay_range), boring);
+      }
     } else {
       bored.detach();
     }
@@ -334,6 +338,10 @@ void setup()
   static_assert(SAMPLE_DELAY > 0, "SAMPLE_DELAY breaks Ticker; needs to be >0.");
   static_assert(SAMPLE_DELAY < MIN_DELAY, "SAMPLE_DELAY is too high; WDT will kill us.");
   static_assert(SAMPLE_DELAY <= DISPLAY_DELAY, "DISPLAY_DELAY is too low.");
+  static_assert(DISPLAY_DELAY < BORED_MIN_DELAY, "display vs. bored mismatch.");
+  static_assert(BORED_MIN_DELAY <= BORED_MAX_DELAY, "bored delays mismatch.");
+  static_assert(BORED_MAX_DELAY <= MAX_DELAY, "BORED_MAX_DELAY is too high; overflows.");
+
 
   sampler.attach_ms(SAMPLE_DELAY, sound_sample);
   display.attach_ms(DISPLAY_DELAY, display_update);
