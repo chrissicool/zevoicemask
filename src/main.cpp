@@ -24,10 +24,12 @@ template< typename T, typename U>
 static inline bool is_set(T const &var, U pos)
 { return !!(var & (1 << pos)); }
 
-unsigned long long operator"" _millis(unsigned long long x) {
+constexpr unsigned short
+operator"" _millis(const unsigned long long x) {
   return x;
 }
-unsigned long long operator"" _secs(unsigned long long x) {
+constexpr unsigned short
+operator"" _secs(const unsigned long long x) {
   return x * 1000_millis;
 }
 
@@ -132,7 +134,16 @@ static BwFrames(6) mouth = {
   B00111100
 }};
 
-#define DISPLAY_DELAY   (80)    // 12.5 fps
+
+/*
+ * The maximum delay is ~65_secs. It overflows otherwise.
+ * The shortest delay must be smaller than 100_millis,
+ * otherwise the onboard WDT kills us.
+ */
+#define MAX_DELAY       (USHRT_MAX)
+#define MIN_DELAY       (100_millis)
+
+#define DISPLAY_DELAY   (80_millis)    // 12.5 fps
 #define SAMPLES         (3)
 #define SAMPLE_DELAY    ((DISPLAY_DELAY * 3) / (2 * SAMPLES))
 
@@ -321,8 +332,8 @@ void setup()
   Serial.println();
 #endif
   static_assert(SAMPLE_DELAY > 0, "SAMPLE_DELAY breaks Ticker; needs to be >0.");
-  static_assert(SAMPLE_DELAY < 100, "SAMPLE_DELAY is too high; WDT will kill us.");
-  static_assert(SAMPLE_DELAY < DISPLAY_DELAY, "DISPLAY_DELAY is too low.");
+  static_assert(SAMPLE_DELAY < MIN_DELAY, "SAMPLE_DELAY is too high; WDT will kill us.");
+  static_assert(SAMPLE_DELAY <= DISPLAY_DELAY, "DISPLAY_DELAY is too low.");
 
   sampler.attach_ms(SAMPLE_DELAY, sound_sample);
   display.attach_ms(DISPLAY_DELAY, display_update);
