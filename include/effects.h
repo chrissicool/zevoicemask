@@ -15,7 +15,7 @@ private:
   Effect *_current[N];
 
 public:
-  Effects();
+  Effects() noexcept;
 
   /**
    * Choose new effect.

@@ -13,7 +13,7 @@ private:
   unsigned _frame;
 
 public:
-  Animations();
+  Animations() noexcept;
 
   /**
    * Chooses a new animation and resets it to play from the beginning.
