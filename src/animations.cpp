@@ -5,6 +5,7 @@
 
 #include <animation.h>
 #include <animations/kiss.h>
+#include <animations/matrix.h>
 #include <animations/noise.h>
 #include <animations/pacman.h>
 #include <animations/scanner.h>
@@ -17,6 +18,7 @@
 Animations::Animations()
   : _animations{
       &kiss,
+      &matrix,
       &noise,
       &pacman,
       &scanner,
