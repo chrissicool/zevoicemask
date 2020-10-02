@@ -18,6 +18,8 @@ void Blend::init()
     b = 0;
 
   dimto = RgbColor(r, g, b);
+  if (dimto == 0)
+    dimto = RgbColor(random(192) + 64);
 }
 
 void Blend::apply(unsigned percent)
