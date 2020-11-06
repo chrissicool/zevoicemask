@@ -354,7 +354,9 @@ void setup()
 
   pinMode(D3 /* Flash button */, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(D3), isr, FALLING);
-  boring();
+
+  animations.init();
+  effects.init();
 
   digitalWrite(LED_BUILTIN, HIGH);
 }

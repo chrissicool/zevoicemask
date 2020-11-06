@@ -18,6 +18,12 @@ public:
   Effects() noexcept;
 
   /**
+   * Initialize effects.
+   */
+  void init()
+  { choose(); }
+
+  /**
    * Choose new effect.
    */
   void choose();

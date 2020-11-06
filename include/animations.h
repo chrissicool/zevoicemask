@@ -12,8 +12,15 @@ private:
   Animation *_current;
   unsigned _frame;
 
+  void set(Animation *a);
+
 public:
   Animations() noexcept;
+
+  /**
+   * Initialize animations.
+   */
+  void init();
 
   /**
    * Chooses a new animation and resets it to play from the beginning.

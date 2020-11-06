@@ -4,6 +4,7 @@
 #include <animations.h>
 
 #include <animation.h>
+#include <animations/boot.h>
 #include <animations/kiss.h>
 #include <animations/matrix.h>
 #include <animations/noise.h>
@@ -29,20 +30,30 @@ Animations::Animations()
     _current(nullptr), _frame(0)
 { }
 
-void Animations::choose()
+void Animations::init()
+{
+  set(&boot);
+}
+
+void Animations::set(Animation *a)
 {
   if (_current)
     _current->deinit();
 
+  _current = a;
+
+  _current->init();
+  _frame = 0;
+}
+
+void Animations::choose()
+{
   size_t idx = ::random(_animations.size());
 #if defined(ANIMATION)
   auto it = std::find(_animations.begin(), _animations.end(), &ANIMATION);
   idx = it - _animations.begin();
 #endif
-  _current = _animations[idx];
-
-  _current->init();
-  _frame = 0;
+  set(_animations[idx]);
 }
 
 bool Animations::active() const
