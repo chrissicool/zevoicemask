@@ -18,16 +18,18 @@ VERBOSE = --verbose
 endif
 
 ifeq ($(RELEASE),)
-export PLATFORMIO_BUILD_FLAGS= -DVOICEMASK_DEBUG
+PLATFORMIO_BUILD_FLAGS= -DVOICEMASK_DEBUG
 endif
+
+PIO= PLATFORMIO_BUILD_FLAGS="$(PLATFORMIO_BUILD_FLAGS)" platformio
 
 TARGET := nodemcuv2 
 
 build:
-	platformio run $(addprefix -e ,$(TARGET)) $(VERBOSE)
+	$(PIO) run $(addprefix -e ,$(TARGET)) $(VERBOSE)
 
 test:
-	platformio test -e native $(VERBOSE)
+	$(PIO) test -e native $(VERBOSE)
 
 release: version=$(shell git describe --tags --candidates=1 --dirty --broken)
 release:
@@ -42,7 +44,7 @@ release:
 
 install upload flash:
 	[ $(words $(TARGET)) -eq 1 ] || exit 1
-	platformio run $(addprefix -e ,$(TARGET)) --target upload $(VERBOSE)
+	$(PIO) run $(addprefix -e ,$(TARGET)) --target upload $(VERBOSE)
 
 
 clean-pio3:
