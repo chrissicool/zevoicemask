@@ -40,7 +40,7 @@ to not drop the mask.
 A tube scarf has proven to be working well in practice.
 It hides the cables and holds the electronics when you pull down the mask.
 
-Besides that, you will need the following electronics parts:
+Besides that, you will need to assemble the following electronics parts:
 
 <table>
 <tr>
@@ -63,7 +63,7 @@ Besides that, you will need the following electronics parts:
 </td>
 </tr>
 <tr>
-<td>
+<td width="75%">
 
 *   Microphone sensor (MAX4466) breakout board with a rotary potentiometer
 
@@ -79,7 +79,7 @@ Besides that, you will need the following electronics parts:
 </td>
 </tr>
 <tr>
-<td>
+<td width="75%">
 
 *   8x8 matrix LED based on WS2812B ECO (ideally with a flexible board)
 
@@ -97,26 +97,6 @@ Besides that, you will need the following electronics parts:
 </td>
 <td>
 <p align="center"><img align="center" src="images/led_matrix.png" width="85%" height="85%" /></p>
-</td>
-</tr>
-<TR>
-<td>
-
-*   9V block battery clip (optional)
-
-    Connect the clip's positive (*+*) wire to the *VIN* pin on the NodeMCU board.
-    Connect the clip's negative (*-*) wire to any of the *GND* pins on the NodeMCU board.
-
-    If you choose not to use the battery clip, you can use a regular USB powerbank instead.
-
-    If you install the battery clip, do not power the device from battery *and* USB,
-    only use one power source at a time.
-
-> **NOTE** Make sure the wires are long enough. Do not place a battery near your head!
-
-</td>
-<td>
-<p align="center"><img align="center" src="images/clip.png" width="85%" height="85%" /></p>
 </td>
 </tr>
 </table>
@@ -142,6 +122,52 @@ Place the microphone top-center of the LED matrix board. This way it is closest 
 Fix it in a way that you are still able to adjust the gain.
 
 At the end, fix and isolate everything with electrical tape.
+
+The following additional pieces are required:
+
+<table>
+<tr>
+<td width="75%">
+
+*   Micro-USB cable
+
+    Use a standard micro-USB cable.
+    A USB cable that only supplies electricity is preferred for daily use.
+    It is generally thinner and more flexible.
+    A magnetic connector is recommended as strain relief on the USB port.
+    This also makes it easier to connect the cable when you have everything
+    in place in front of your mouth.
+
+> **NOTE** A micro-USB cable with data pins is needed to flash the firmware.
+
+</td>
+<td>
+<p align="center"><img align="center" src="images/cable.png" width="85%" height="85%" /></p>
+</td>
+</tr>
+<tr>
+<td width="75%">
+
+*   Powerbank
+
+    A basic USB powerbank will do.
+    There is no need for modern supplies with Quick Charge (QC) or Power Delivery (USB-PD).
+    A small 5000mAh powerbank lasts for about 6h.
+
+    Keep in mind that the LED matrix is demanding with respect to its power supply.
+    Since the hardware design is meant to be kept easy, it has no capacitors.
+    That shifts the pressure for a stable flow of current to the power supply.
+    Make sure to get a good quality power supply.
+
+    Minor quality powerbanks make the mouth move,
+    although it is quiet and the microphone should have no input.
+
+</td>
+<td>
+<p align="center"><img align="center" src="images/powerbank.png" width="85%" height="85%" /></p>
+</td>
+</tr>
+</table>
 
 ## Software
 
