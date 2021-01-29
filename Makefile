@@ -23,7 +23,7 @@ endif
 
 PIO= PLATFORMIO_BUILD_FLAGS="$(PLATFORMIO_BUILD_FLAGS)" platformio
 
-TARGET := nodemcuv2 
+TARGET := $(shell pio run -t default_envs | grep "default_envs=" | cut -d'=' -f 2)
 
 build:
 	$(PIO) run $(addprefix -e ,$(TARGET)) $(VERBOSE)

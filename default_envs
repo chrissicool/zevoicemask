@@ -1,0 +1,23 @@
+# vim: ft=python
+
+import click
+
+Import("env")
+
+def default_envs(*args, **wargs):
+    try:
+        Import("projenv")
+    except:  # pylint: disable=bare-except
+        projenv = env
+
+    config = projenv.GetProjectConfig()
+    default_envs = config.default_envs()
+    click.echo("default_envs={}\n".format(' '.join(map(str, default_envs))))
+
+env.AddCustomTarget(
+    name="default_envs",
+    dependencies=None,
+    actions=default_envs,
+    title="Print default_envs",
+    description="Print default_envs from platformio.ini"
+)
