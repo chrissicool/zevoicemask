@@ -32,7 +32,7 @@ test:
 	$(PIO) platform install native
 	$(PIO) test -e native $(VERBOSE)
 
-release: version=$(shell git describe --tags --candidates=1 --dirty --broken)
+release: version=$(shell git describe --tags --always --candidates=1 --dirty --broken)
 release: test
 	$(MAKE) $(MAKE_OPTIONS) RELEASE=true build
 	@for t in $(TARGET) ; do \
