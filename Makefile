@@ -37,9 +37,9 @@ release: test
 	$(MAKE) $(MAKE_OPTIONS) RELEASE=true build
 	@for t in $(TARGET) ; do \
 		cp .pio/build/$${t}/firmware.bin zevoicemask_$${t}_$(version).bin ; \
-		tput setaf 2 || true ; \
+		tput setaf 2 2>/dev/null || true ; \
 		echo ">>> zevoicemask_$${t}_$(version).bin" ; \
-		tput sgr0 || true ; \
+		tput sgr0 2>/dev/null || true ; \
 	done
 
 install upload flash:
