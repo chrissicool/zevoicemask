@@ -33,8 +33,7 @@ test:
 	$(PIO) test -e native $(VERBOSE)
 
 release: version=$(shell git describe --tags --candidates=1 --dirty --broken)
-release:
-	$(MAKE) $(MAKE_OPTIONS) test
+release: test
 	$(MAKE) $(MAKE_OPTIONS) RELEASE=true build
 	@for t in $(TARGET) ; do \
 		cp .pio/build/$${t}/firmware.bin zevoicemask_$${t}_$(version).bin ; \
