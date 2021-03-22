@@ -29,6 +29,7 @@ build:
 	$(PIO) run $(addprefix -e ,$(TARGET)) $(VERBOSE)
 
 test:
+	$(PIO) platform install native
 	$(PIO) test -e native $(VERBOSE)
 
 release: version=$(shell git describe --tags --candidates=1 --dirty --broken)
