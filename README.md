@@ -1,5 +1,7 @@
 # Ze Voice Mask
 
+[![CI](https://img.shields.io/github/workflow/status/chrissicool/zevoicemask/CI?label=CI)](https://github.com/chrissicool/zevoicemask/actions?query=workflow%3ACI)
+
 <table>
 <tr>
 <td width="75%" valign="top">
