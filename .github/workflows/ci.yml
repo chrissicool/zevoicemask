@@ -34,6 +34,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install --upgrade platformio
+    - name: Update PlatformIO
+      run: |
+        pio update
+        pio lib update
     - name: Perform development build
       run: make
     - name: Run tests
