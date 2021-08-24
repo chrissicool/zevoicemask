@@ -198,7 +198,7 @@ static unsigned SetState(unsigned percent)
   return idx;
 }
 
-static void ICACHE_RAM_ATTR isr()
+static void IRAM_ATTR isr()
 {
   bored.detach();
   bored.once_ms(0, boring);
