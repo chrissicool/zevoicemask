@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -eu
+
+perform() {
+	local _msg
+	_msg="$1"
+	shift
+
+	echo "\n"
+	echo "############"
+	echo "#" "$_msg"
+	echo "############"
+	echo "\n"
+
+	"$@"
+}
+
+if ! echo $PATH | tr ':' '\n' | grep -q "${HOME}"/.local/bin ; then
+	PATH="$PATH:${HOME}/.local/bin"
+	export PATH
+fi
+
+perform "Upgrade Pip"			python3 -m pip install --upgrade --user pip
+perform "Install Platform.IO"		pip3 install --upgrade --user platformio
+perform "Update Platform.IO"		pio pkg update
+perform "Perform development build"	make
+perform "Run tests"			make test
+perform "Perform release build"		make release
+
+perform "Clean up"			make clean

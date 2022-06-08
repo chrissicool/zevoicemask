@@ -18,16 +18,6 @@ jobs:
     - uses: actions/checkout@v2
     - name: Set up Python
       uses: actions/setup-python@v2
-    - name: Install PlatformIO
+    - name: Running continuous integration
       run: |
-        python -m pip install --upgrade pip
-        pip install --upgrade platformio
-    - name: Update PlatformIO
-      run: |
-        pio pkg update
-    - name: Perform development build
-      run: make
-    - name: Run tests
-      run: make test
-    - name: Perform release build
-      run: make release
+        scripts/ci
