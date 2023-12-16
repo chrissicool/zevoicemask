@@ -1,7 +1,6 @@
 #pragma once
 
-#include <Arduino.h>
-#include <NeoPixelBrightnessBus.h> // RgbColor
+#include <NeoPixelBus.h> // RgbColor
 
 #include <progmem.h>
 #include <marray.h>

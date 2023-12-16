@@ -7,7 +7,7 @@ extern "C" {
 #include <MAX4466.h>
 
 #include <NeoPixelAnimator.h>
-#include <NeoPixelBrightnessBus.h>
+#include <NeoPixelBusLg.h>
 
 #include <running_avg.h>
 #include <animations.h>
@@ -72,7 +72,7 @@ static const uint16_t PixelCount = COLUMNS * ROWS;
 static const uint8_t PixelPin = D9;  // RX
 
 static NeoTopology<ColumnMajorAlternatingLayout> topo(COLUMNS, ROWS);
-static NeoPixelBrightnessBus<NeoGrbFeature, NeoEsp8266Dma800KbpsMethod> strip(PixelCount, PixelPin);
+static NeoPixelBusLg<NeoGrbFeature, NeoEsp8266Dma800KbpsMethod, NeoGammaNullMethod> strip(PixelCount, PixelPin);
 
 static Animations animations;
 static Effects effects;
@@ -329,7 +329,7 @@ void setup()
   init_serial();
 
   strip.Begin();
-  strip.SetBrightness(85);
+  strip.SetLuminance(192);
   strip.ClearTo(0);
   strip.Show();
 
